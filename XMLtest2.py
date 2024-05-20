@@ -1,10 +1,10 @@
-
 import requests
 import xml.etree.ElementTree as ET
 from tkinter import *
 import tkinter.ttk as ttk
 
-def on_si_select():
+
+def show_stores():
     store_list.delete(0, END)
 
     si_name = selected_si.get()
@@ -15,12 +15,16 @@ def on_si_select():
         store_list.insert(END, f"{store['name']}")
 
 
+def on_si_select(event):
+    show_stores()
+
+
 url = "http://openapi.gg.go.kr/Resrestrtcvnstr"
 params = {
     "KEY": "874d62100e224676a4f0cd46e40b3da5",
     "Type": "xml",
     "pIndex": "1",
-    "pSize": "500"
+    "pSize": "1000"
     #"SIGUN_NM": '시흥시'
     #"SIGUN_CD": ''
 }
@@ -70,8 +74,7 @@ scrollbar.config(command=store_list.yview)
 
 si_combo.bind("<<ComboboxSelected>>", on_si_select)
 
-
-on_si_select()
+show_stores()
 
 window.mainloop()
 
