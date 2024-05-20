@@ -10,14 +10,14 @@ import requests
 import xml.etree.ElementTree as ET
 from tkinter import *
 
-url = "http://safemap.go.kr/openApiService/data/getConvenienceStoreData.do"
+url = "http://openapi.gg.go.kr/Resrestrtcvnstr"
 params = {
-    "serviceKey": "CPXKIT4A-CPXK-CPXK-CPXK-CPXKIT4A5A",
-    "pageNo": "1",
-    "numOfRows": "10",
-    "dataType": "xml",
-    "CTPRVN_CD": '110000',
-    "SSG_CD": '110019'
+    "KEY": "874d62100e224676a4f0cd46e40b3da5",
+    "Type": "xml",
+    "pIndex": "1",
+    "pSize": "100"
+    #"SIGUN_NM": '',
+    #"SIGUN_CD": ''
 }
 
 response = requests.get(url, params=params)
@@ -30,22 +30,22 @@ window.title("편의점 정보")
 frame = Frame(window)
 frame.pack()
 
-header = ["상호명", "주소", "전화번호"]
+header = ["상호명", "주소"]
 
 for i, col_name in enumerate(header):
     label = Label(frame, text=col_name, font=("Helvetica", 14, "bold"))
-    label.grid(row=0, column=1)
+    label.grid(row=0, column=i)
 
 row_count = 1
-for item in root.iter("item"):
-    name = item.findtext("FCLTY_NM")
-    addr = item.findtext("RN_ADRES")
-    telno = item.findtext("TELNO")
+for item in root.iter("row"):
+    name = item.findtext("BIZPLC_NM")
+    addr = item.findtext("REFINE_ROADNM_ADDR")
+    #telno = item.findtext("TELNO")
 
-    data = [name, addr, telno]
+    data = [name, addr]
     for i, value in enumerate(data):
         label = Label(frame, text=value, font=("Helvetica", 12))
-        label.grid(row=row_count, column=1)
+        label.grid(row=row_count, column=i)
 
     row_count += 1
 
