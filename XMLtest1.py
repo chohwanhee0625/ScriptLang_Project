@@ -8,10 +8,8 @@ url = "http://safemap.go.kr/openApiService/data/getConvenienceStoreData.do"
 params = {
     "serviceKey": "CPXKIT4A-CPXK-CPXK-CPXK-CPXKIT4A5A",
     "pageNo": "1",
-    "numOfRows": "10",
-    "dataType": "xml",
-    "CTPRVN_CD": '110000',
-    "SSG_CD": '110019'
+    "numOfRows": "100",
+    "dataType": "XML"
 }
 
 response = requests.get(url, params=params)
@@ -39,7 +37,7 @@ for item in root.iter("item"):
     data = [name, addr, telno]
     for i, value in enumerate(data):
         label = Label(frame, text=value, font=("Helvetica", 12))
-        label.grid(row=row_count, column=1)
+        label.grid(row=row_count, column=i)
 
     row_count += 1
 
