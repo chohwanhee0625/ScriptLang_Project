@@ -1,9 +1,4 @@
-from tkinter import *
-from tkinter import font
-import tkinter.ttk as ttk
-
-import requests
-import xml.etree.ElementTree as ET
+from library_file import *
 
 
 class ConvenienceStore:
@@ -27,21 +22,22 @@ class ConvenienceStore:
             "addr": item.findtext("REFINE_ROADNM_ADDR"),
             "state": item.findtext("BSN_STATE_NM"),
             "si": item.findtext("SIGUN_NM"),
-            "type": "기타"
+            "type": "기타",
+            "telno": "031-000-0000"
         }
 
-        # if any(name in store['name'] for name in ['GS', '지에스']):
-        #     store['type'] = 'GS25'
-        # elif any(name in store['name'] for name in ['CU', '씨유']):
-        #     store['type'] = 'CU'
-        # elif any(name in store['name'] for name in ['7eleven', '7ELEVEN', '세븐일레븐']):
-        #     store['type'] = '세븐일레븐'
-        # elif any(name in store['name'] for name in ['mini', 'MINI', '미니스톱']):
-        #     store['type'] = '미니스탑'
-        # elif any(name in store['name'] for name in ['이마트', 'e']):
-        #     store['type'] = '이마트24'
-        # else:
-        #     store['type'] = '기타'
+        if 'GS' in store['name'] or '지에스' in store['name']:
+            store['type'] = 'GS25'
+        elif 'CU' in store['name'] or '씨유' in store['name']:
+            store['type'] = 'CU'
+        elif '7eleven' in store['name'] or '7ELEVEN' in store['name'] or '세븐일레븐' in store['name']:
+            store['type'] = '세븐일레븐'
+        elif 'mini' in store['name'] or 'MINI' in store['name'] or '미니스톱' in store['name']:
+            store['type'] = '미니스톱'
+        elif '이마트' in store['name'] or 'e' in store['name']:
+            store['type'] = '이마트24'
+        else:
+            store['type'] = '기타'
 
         stores.append(store)
 
@@ -59,13 +55,20 @@ class ConvenienceStore:
 
         # 즐겨찾기 버튼
         #Button(frame, width=2).pack()
-
+        
+        # 사실상 메인 프레임
         frame1 = Frame(frame)
         frame1.pack()
 
+        # 리스트 박스와 스크롤바 담을 프레임
         frame2 = Frame(frame1)
         frame2.pack(side=LEFT)
 
+        Frame(frame, height=10).pack()
+
+        # 통계 캔버스와 지도 이미지 캔버스 담을 프레임
+        frame3 = Frame(frame)
+        frame3.pack()
 
         # 편의점 목록 리스트박스 생성
         self.store_list = Listbox(frame2, width=50)
@@ -89,12 +92,13 @@ class ConvenienceStore:
         Button(frame, width=5, command=self.show_info).pack()
 
         # 통계 캔버스 생성
-        con_type = Canvas(frame, width=350, height=300, bg='white')
+        con_type = Canvas(frame3, width=380, height=250, bg='white')
         con_type.pack(side=LEFT)
+        self.show_types()
 
         # 지도 이미지 캔버스 생성
-        map_img = Canvas(frame, width=300, height=300, bg='white')
-        map_img.pack(side=LEFT)
+        map_img = Canvas(frame3, width=300, height=250, bg='white')
+        map_img.pack()
 
 
 
@@ -121,20 +125,24 @@ class ConvenienceStore:
         if a:
             store = self.stores_in_si[a[0]]
 
-        self.con_info.create_text(150, 15, font=name_font, text=store['name'])
+            self.con_info.create_text(150, 15, font=name_font, text=store['name'])
 
-        self.con_info.create_text(30, 45, font=temp_font, text="주소: ")
-        self.con_info.create_text(170, 45, font=temp_font, text=store['addr'][:18])
-        self.con_info.create_text(170, 60, font=temp_font, text=store['addr'][18:])
+            self.con_info.create_text(30, 45, font=temp_font, text="주소: ")
+            self.con_info.create_text(170, 45, font=temp_font, text=store['addr'][:18])
+            self.con_info.create_text(170, 60, font=temp_font, text=store['addr'][18:])
 
-        self.con_info.create_text(52, 90, font=temp_font, text="편의점 종류: ")
-        self.con_info.create_text(170, 90, font=temp_font, text=store['type'])
+            self.con_info.create_text(52, 90, font=temp_font, text="편의점 종류: ")
+            self.con_info.create_text(170, 90, font=temp_font, text=store['type'])
 
-        self.con_info.create_text(45, 120, font=temp_font, text="운영 상태: ")
-        self.con_info.create_text(170, 120, font=temp_font, text=store['state'])
+            self.con_info.create_text(45, 120, font=temp_font, text="운영 상태: ")
+            self.con_info.create_text(170, 120, font=temp_font, text=store['state'])
 
-        self.con_info.create_text(42, 150, font=temp_font, text="전화번호: ")
-        self.con_info.create_text(170, 150, font=temp_font, text="정보없음")
+            self.con_info.create_text(42, 150, font=temp_font, text="전화번호: ")
+            self.con_info.create_text(170, 150, font=temp_font, text=store['telno'])
 
+    def show_types(self):
+        # 기타 포함 6종류의 막대그래프 그림
+
+        pass
 
 
