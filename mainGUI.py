@@ -1,6 +1,8 @@
 from tkinter import *
 import tkinter.ttk
 
+from ConvenienceStore import *
+
 class MainGUI:
     def __init__(self):
         window = Tk()
@@ -10,6 +12,7 @@ class MainGUI:
 
         self.frame1 = Frame(window)
         notebook.add(self.frame1, text='편의점')
+        ConvenienceStore(self.frame1)
         #Label(frame1, text='page1 내용', fg='red', font='helvetica 48').pack()
 
         self.frame2 = Frame(window)
