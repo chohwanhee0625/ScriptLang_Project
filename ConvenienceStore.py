@@ -7,7 +7,7 @@ class ConvenienceStore:
         "KEY": "874d62100e224676a4f0cd46e40b3da5",
         "Type": "xml",
         "pIndex": "1",
-        "pSize": "300"
+        "pSize": "1000"
     }
 
     response = requests.get(url, params=params)
@@ -56,7 +56,7 @@ class ConvenienceStore:
         # 즐겨찾기 버튼
         #Button(frame, width=2).pack()
         
-        # 사실상 메인 프레임
+        # 메인 프레임
         frame1 = Frame(frame)
         frame1.pack()
 
@@ -91,9 +91,9 @@ class ConvenienceStore:
         self.con_info.pack(side=RIGHT)
         Button(frame, width=5, command=self.show_info).pack()
 
-        # 통계 캔버스 생성
-        con_type = Canvas(frame3, width=380, height=250, bg='white')
-        con_type.pack(side=LEFT)
+        # 통계 캔버스 생성, 막대 그래프 그리기
+        self.con_type = Canvas(frame3, width=380, height=250, bg='white')
+        self.con_type.pack(side=LEFT)
         self.show_types()
 
         # 지도 이미지 캔버스 생성
@@ -114,6 +114,7 @@ class ConvenienceStore:
 
     def on_si_select(self, event):
         self.show_stores()
+        self.show_types()
 
     def show_info(self):
         self.con_info.delete('all')
@@ -142,7 +143,35 @@ class ConvenienceStore:
 
     def show_types(self):
         # 기타 포함 6종류의 막대그래프 그림
+        # 캔버스 크기: 380x250
+        self.con_type.delete('all')
 
-        pass
+        types = {
+            "GS25": 0,
+            "CU": 0,
+            "세븐일레븐": 0,
+            "미니스톱": 0,
+            "이마트24": 0,
+            "기타": 0
+        }
+
+        for store in self.stores_in_si:
+            types[store['type']] += 1
+
+        max_value = max(types.values()) + 1
+        width = int(self.con_type['width'])
+        height = int(self.con_type['height'])
+        barwidth = (width - 60) / 6
+        for i, (name, count) in enumerate(types.items()):
+            x1 = i * (barwidth + 10) + 5
+            x2 = x1 + barwidth
+            y2 = height - 20
+            y1 = y2 - y2 * count / max_value
+            self.con_type.create_rectangle(x1, y1, x2, y2, fill='light blue')
+            self.con_type.create_text((x1+x2)/2, height - 10, text=name)
+            self.con_type.create_text((x1+x2)/2, y1-10, text=count)
+
+
+
 
 
