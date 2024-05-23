@@ -106,10 +106,12 @@ class UrbanPark:
             self.park_list.insert(END, f"{park['name']} ({park['type']})")
 
     def on_si_select(self, event):
+        # 콤보박스 시군 선택 시 해당 시에 맞는 정보 업데이트 이벤트 함수
         self.show_parks()
         self.show_types()
 
     def show_info(self):
+        # 리스트박스 오른쪽에 정보를 나타내는 이벤트 함수
         self.park_info.delete('all')
 
         name_font = font.Font(size=13, weight='bold', family='Consolas')
@@ -143,9 +145,6 @@ class UrbanPark:
 
             self.park_info.create_text(45, 135, font=temp_font, text="담당 기관: ")
             self.park_info.create_text(170, 135, font=temp_font, text=park['manage'])
-
-
-
 
     def show_types(self):
         pass

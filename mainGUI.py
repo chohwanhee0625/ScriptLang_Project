@@ -2,7 +2,7 @@
 
 from ConvenienceStore import *
 from UrbanPark import *
-
+from Favorites import *
 
 class MainGUI:
     def __init__(self):
@@ -27,6 +27,7 @@ class MainGUI:
 
         self.frame5 = Frame(window)
         notebook.add(self.frame5, text='즐겨찾기')
+        Favorites(self.frame5)
 
         window.mainloop()
 
