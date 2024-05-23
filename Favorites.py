@@ -4,8 +4,11 @@ from library_file import *
 class Favorites:
     favorites = []
     def __init__(self, frame):
-        Button(frame, text='삭제').pack()
-        Button(frame, text='메일').pack()
+
+        button_frame = Frame(frame)
+        button_frame.pack()
+        Button(button_frame, text='삭제').pack(side=LEFT)
+        Button(button_frame, text='메일').pack(side=LEFT)
 
         # 간격 조절을 위한 더미 프레임
         Frame(frame, height=20).pack()
