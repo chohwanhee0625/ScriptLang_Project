@@ -54,7 +54,7 @@ class ConvenienceStore:
         self.si_combo.pack()
 
         # 즐겨찾기 버튼
-        #Button(frame, width=2).pack()
+        Button(frame, width=2).pack()
         
         # 메인 프레임
         frame1 = Frame(frame)

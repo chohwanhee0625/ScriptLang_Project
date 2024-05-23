@@ -1,5 +1,5 @@
 from ConvenienceStore import *
-
+from UrbanPark import *
 
 
 class MainGUI:
@@ -14,7 +14,8 @@ class MainGUI:
         ConvenienceStore(self.frame1)
 
         self.frame2 = Frame(window)
-        notebook.add(self.frame2, text='공원')
+        notebook.add(self.frame2, text='도시공원')
+        UrbanPark(self.frame2)
 
         self.frame3 = Frame(window)
         notebook.add(self.frame3, text='체육시설')
