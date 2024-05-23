@@ -63,7 +63,7 @@ class UrbanPark:
         frame3 = Frame(frame)
         frame3.pack()
 
-        # 편의점 목록 리스트박스 생성
+        # 공원 목록 리스트박스 생성
         self.park_list = Listbox(frame2, width=50)
         self.park_list.pack(side=LEFT)
 
@@ -71,7 +71,7 @@ class UrbanPark:
         scrollbar = Scrollbar(frame2)
         scrollbar.pack(side=RIGHT, fill=Y)
 
-        # 스크롤바와 편의점 목록 연결
+        # 스크롤바와 공원 목록 연결
         self.park_list.config(yscrollcommand=scrollbar.set)
         scrollbar.config(command=self.park_list.yview)
 
@@ -79,10 +79,12 @@ class UrbanPark:
 
         self.show_parks()
 
-        # 편의점 정보 출력 캔버스 생성
+        # 공원 정보 출력 캔버스 생성
         self.park_info = Canvas(frame1, width=300, height=200, bg='white')
         self.park_info.pack(side=RIGHT)
-        Button(frame, width=5, command=self.show_info).pack()
+        
+        # 정보 출력을 위한 버튼, 나중에 리스트 항목 클릭 시 정보 출력하도록 변경
+        Button(frame, width=5, text='출력', command=self.show_info).pack()
 
         # 통계 캔버스 생성, 막대 그래프 그리기
         self.park_type = Canvas(frame3, width=380, height=250, bg='white')
@@ -99,7 +101,7 @@ class UrbanPark:
         si_name = self.selected_si.get()
         self.parks_in_si = [park for park in self.parks if park['si'] == si_name]
 
-        # 편의점 목록에 추가
+        # 공원 목록에 추가
         for park in self.parks_in_si:
             self.park_list.insert(END, f"{park['name']} ({park['type']})")
 
@@ -117,19 +119,33 @@ class UrbanPark:
         if a:
             park = self.parks_in_si[a[0]]
 
-            print(park['facil'])
-
             self.park_info.create_text(150, 15, font=name_font, text=park['name'])
 
             self.park_info.create_text(30, 45, font=temp_font, text="주소: ")
             self.park_info.create_text(170, 45, font=temp_font, text=park['addr'][:13])
             self.park_info.create_text(170, 60, font=temp_font, text=park['addr'][13:])
 
-            self.park_info.create_text(52, 90, font=temp_font, text="공원 종류: ")
-            self.park_info.create_text(170, 90, font=temp_font, text=park['type'])
+            self.park_info.create_text(45, 75, font=temp_font, text="공원 종류: ")
+            self.park_info.create_text(170, 75, font=temp_font, text=park['type'])
 
-            self.park_info.create_text(42, 150, font=temp_font, text="전화번호: ")
-            self.park_info.create_text(170, 150, font=temp_font, text=park['telno'])
+            self.park_info.create_text(42, 90, font=temp_font, text="전화번호: ")
+            self.park_info.create_text(170, 90, font=temp_font, text=park['telno'])
+
+            self.park_info.create_text(55, 105, font=temp_font, text="공원 내 시설: ")
+            facils = ''
+            for facil in park['facil']:
+                if facil:
+                    facils += ' ' + facil
+            self.park_info.create_text(170, 105, font=temp_font, text=facils.split())
+
+            self.park_info.create_text(75, 120, font=temp_font, text="공원 면적(평방미터): ")
+            self.park_info.create_text(170, 120, font=temp_font, text=park['area'])
+
+            self.park_info.create_text(45, 135, font=temp_font, text="담당 기관: ")
+            self.park_info.create_text(170, 135, font=temp_font, text=park['manage'])
+
+
+
 
     def show_types(self):
         pass

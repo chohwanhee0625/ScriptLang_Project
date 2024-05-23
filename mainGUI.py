@@ -1,3 +1,5 @@
+# pip install requests
+
 from ConvenienceStore import *
 from UrbanPark import *
 
