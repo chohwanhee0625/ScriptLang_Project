@@ -33,6 +33,8 @@ class UrbanPark:
         park['facil'].append(item.findtext("PARK_CLTR_FACLT_DTLS"))
         park['facil'].append(item.findtext("PARK_ETC_FACLT_DTLS	"))
 
+        search_park = park['si'] + ' +' + park['name']
+
         parks.append(park)
 
     def __init__(self, frame):
