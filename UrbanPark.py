@@ -91,7 +91,7 @@ class UrbanPark:
         # 정보 출력을 위한 버튼, 나중에 리스트 항목 클릭 시 정보 출력하도록 변경
         Button(frame, width=5, text='출력', command=self.show_info).pack()
 
-        # 통계 캔버스 생성, 막대 그래프 그리기
+        # 선택 항목 공원 이미지 출력 캔버스
         self.park_type = Canvas(frame3, width=380, height=250, bg='white')
         self.park_type.pack(side=LEFT)
         self.show_types()
@@ -131,24 +131,24 @@ class UrbanPark:
             self.park_info.create_text(170, 45, font=temp_font, text=park['addr'][:13])
             self.park_info.create_text(170, 60, font=temp_font, text=park['addr'][13:])
 
-            self.park_info.create_text(45, 75, font=temp_font, text="공원 종류: ")
-            self.park_info.create_text(170, 75, font=temp_font, text=park['type'])
+            self.park_info.create_text(45, 80, font=temp_font, text="공원 종류: ")
+            self.park_info.create_text(170, 80, font=temp_font, text=park['type'])
 
-            self.park_info.create_text(42, 90, font=temp_font, text="전화번호: ")
-            self.park_info.create_text(170, 90, font=temp_font, text=park['telno'])
+            self.park_info.create_text(42, 100, font=temp_font, text="전화번호: ")
+            self.park_info.create_text(170, 100, font=temp_font, text=park['telno'])
 
-            self.park_info.create_text(55, 105, font=temp_font, text="공원 내 시설: ")
+            self.park_info.create_text(55, 120, font=temp_font, text="공원 내 시설: ")
             facils = ''
             for facil in park['facil']:
                 if facil:
                     facils += ' ' + facil
-            self.park_info.create_text(170, 105, font=temp_font, text=facils.split())
+            self.park_info.create_text(170, 120, font=temp_font, text=facils.split())
 
-            self.park_info.create_text(75, 120, font=temp_font, text="공원 면적(평방미터): ")
-            self.park_info.create_text(170, 120, font=temp_font, text=park['area'])
+            self.park_info.create_text(75, 140, font=temp_font, text="공원 면적(평방미터): ")
+            self.park_info.create_text(170, 140, font=temp_font, text=park['area'])
 
-            self.park_info.create_text(45, 135, font=temp_font, text="담당 기관: ")
-            self.park_info.create_text(170, 135, font=temp_font, text=park['manage'])
+            self.park_info.create_text(45, 160, font=temp_font, text="담당 기관: ")
+            self.park_info.create_text(170, 160, font=temp_font, text=park['manage'])
 
     def show_types(self):
         pass

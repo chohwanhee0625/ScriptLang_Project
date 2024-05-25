@@ -1,8 +1,8 @@
 # pip install requests
-
-from UrbanPark import *
 from ConvenienceStore import *
 from Favorites import *
+from UrbanPark import *
+from SportsCenter import *
 
 class MainGUI:
     def __init__(self):
@@ -21,6 +21,7 @@ class MainGUI:
 
         self.frame3 = Frame(window)
         notebook.add(self.frame3, text='체육시설')
+        SportsCenter(self.frame3)
 
         self.frame4 = Frame(window)
         notebook.add(self.frame4, text='공중화장실')
