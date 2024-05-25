@@ -1,7 +1,7 @@
 # pip install requests
 
-from ConvenienceStore import *
 from UrbanPark import *
+from ConvenienceStore import *
 from Favorites import *
 
 class MainGUI:

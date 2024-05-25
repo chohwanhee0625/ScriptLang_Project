@@ -1,4 +1,6 @@
+import library_file
 from library_file import *
+
 
 
 class UrbanPark:
@@ -25,7 +27,8 @@ class UrbanPark:
             "telno": item.findtext("MANAGE_INST_TELNO"),
             "manage": item.findtext("MANAGE_INST_NM"),
             "area": item.findtext("PARK_AR"),
-            "facil": []
+            "facil": [],
+            "data_type": "공원"
         }
         park['facil'].append(item.findtext("PARK_SPORTS_FACLT_DTLS"))
         park['facil'].append(item.findtext("PARK_AMSMT_FACLT_DTLS"))
@@ -49,7 +52,7 @@ class UrbanPark:
         self.si_combo.pack()
 
         # 즐겨찾기 버튼
-        Button(frame, width=2).pack()
+        Button(frame, width=2, text='즐찾', command=self.add_favorite).pack()
 
         # 메인 프레임
         frame1 = Frame(frame)
@@ -119,7 +122,6 @@ class UrbanPark:
         name_font = font.Font(size=13, weight='bold', family='Consolas')
         temp_font = font.Font(size=10, family='Consolas')
         a = self.park_list.curselection()
-        park = {}
         if a:
             park = self.parks_in_si[a[0]]
 
@@ -150,6 +152,13 @@ class UrbanPark:
 
     def show_types(self):
         pass
+
+    def add_favorite(self):
+        a = self.park_list.curselection()
+        if a:
+            park = self.parks_in_si[a[0]]
+            if park not in library_file.favorites:
+                library_file.favorites.append(park)
 
 
 

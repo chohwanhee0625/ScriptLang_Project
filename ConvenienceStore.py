@@ -1,4 +1,5 @@
 from library_file import *
+import library_file
 
 
 class ConvenienceStore:
@@ -23,7 +24,8 @@ class ConvenienceStore:
             "state": item.findtext("BSN_STATE_NM"),
             "si": item.findtext("SIGUN_NM"),
             "type": "기타",
-            "telno": "031-000-0000"
+            "telno": "031-000-0000",
+            "data_type": "편의점"
         }
 
         if 'GS' in store['name'] or '지에스' in store['name']:
@@ -54,7 +56,7 @@ class ConvenienceStore:
         self.si_combo.pack()
 
         # 즐겨찾기 버튼
-        Button(frame, width=2).pack()
+        Button(frame, width=2, text='즐찾', command=self.add_favorite).pack()
         
         # 메인 프레임
         frame1 = Frame(frame)
@@ -122,7 +124,6 @@ class ConvenienceStore:
         name_font = font.Font(size=13, weight='bold', family='Consolas')
         temp_font = font.Font(size=10, family='Consolas')
         a = self.store_list.curselection()
-        store = {}
         if a:
             store = self.stores_in_si[a[0]]
 
@@ -171,7 +172,12 @@ class ConvenienceStore:
             self.con_type.create_text((x1+x2)/2, height - 10, text=name)
             self.con_type.create_text((x1+x2)/2, y1-10, text=count)
 
-
+    def add_favorite(self):
+        a = self.store_list.curselection()
+        if a:
+            store = self.stores_in_si[a[0]]
+            if store not in library_file.favorites:
+                library_file.favorites.append(store)
 
 
 
