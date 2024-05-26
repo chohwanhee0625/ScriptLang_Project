@@ -113,7 +113,6 @@ class UrbanPark:
     def on_si_select(self, event):
         # 콤보박스 시군 선택 시 해당 시에 맞는 정보 업데이트 이벤트 함수
         self.show_parks()
-        self.show_types()
 
     def show_info(self):
         # 리스트박스 오른쪽에 정보를 나타내는 이벤트 함수

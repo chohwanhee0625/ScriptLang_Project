@@ -3,6 +3,7 @@ from ConvenienceStore import *
 from Favorites import *
 from UrbanPark import *
 from SportsCenter import *
+from PublicToilet import *
 
 class MainGUI:
     def __init__(self):
@@ -25,6 +26,7 @@ class MainGUI:
 
         self.frame4 = Frame(window)
         notebook.add(self.frame4, text='공중화장실')
+        PublicToilet(self.frame4)
 
         self.frame5 = Frame(window)
         notebook.add(self.frame5, text='즐겨찾기')
