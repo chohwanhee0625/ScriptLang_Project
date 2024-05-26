@@ -67,7 +67,7 @@ class Favorites:
 
         # 즐겨찾기 목록에 추가
         for favorite in self.favorites:
-            if any(type == favorite['data_type'] for type in ['편의점', '공원', '체육시설']):
+            if any(type == favorite['data_type'] for type in ['편의점', '공원', '체육시설', '공중화장실']):
                 self.favorite_list.insert(END, f"{favorite['name']} ({favorite['type']})")
 
     def delete_favorite(self):
@@ -146,4 +146,29 @@ class Favorites:
                 self.fav_info.create_text(42, 140, font=temp_font, text="전화번호: ")
                 self.fav_info.create_text(170, 140, font=temp_font, text=sport['telno'])
 
+            elif favorite['data_type'] == '공중화장실':
+                toilet = favorite
 
+                self.fav_info.create_text(150, 15, font=name_font, text=toilet['name'])
+
+                self.fav_info.create_text(30, 45, font=temp_font, text="주소: ")
+                self.fav_info.create_text(170, 45, font=temp_font, text=toilet['addr'][:13])
+                self.fav_info.create_text(170, 60, font=temp_font, text=toilet['addr'][13:])
+
+                self.fav_info.create_text(52, 80, font=temp_font, text="화장실 종류: ")
+                self.fav_info.create_text(170, 80, font=temp_font, text=toilet['type'])
+
+                self.fav_info.create_text(45, 100, font=temp_font, text="개방 시간: ")
+                self.fav_info.create_text(170, 100, font=temp_font, text=toilet['time'])
+
+                self.fav_info.create_text(45, 120, font=temp_font, text="남녀 공용: ")
+                self.fav_info.create_text(170, 120, font=temp_font, text=toilet['unisex'])
+
+                self.fav_info.create_text(50, 140, font=temp_font, text="기저귀 교환대")
+                self.fav_info.create_text(170, 140, font=temp_font, text=toilet['nappy'])
+
+                self.fav_info.create_text(42, 160, font=temp_font, text="전화번호: ")
+                self.fav_info.create_text(170, 160, font=temp_font, text=toilet['telno'])
+
+                self.fav_info.create_text(45, 180, font=temp_font, text="관리 기관: ")
+                self.fav_info.create_text(170, 180, font=temp_font, text=toilet['manage'])

@@ -1,6 +1,7 @@
 import library_file
 from library_file import *
-
+from PIL import Image, ImageTk
+import PIL
 
 class PublicToilet:
     url = "https://openapi.gg.go.kr/Publtolt"
@@ -176,11 +177,22 @@ class PublicToilet:
 
             # 해당 시설 존재 시 해당 아이콘 이미지 출력
             if toilet['dspsn_male']:
-                ...
+                print(toilet['name'], "dspsn_male")
+                img = Image.open('images/dspsn_female.png')
+                img = img.resize((100, 100))
+                my_img = ImageTk.PhotoImage(img)
+                Label(self.toilet_type, image=my_img, bg='gray').place(x=20, y=110)
             if toilet['dspsn_female']:
-                ...
+                print(toilet['name'],"dspsn_female")
+                img = Image.open('images/dspsn_female.png')
+                img = img.resize((100, 100))
+                my_img = ImageTk.PhotoImage(img)
+                Label(self.toilet_type, image=my_img, bg='gray').place(x=140, y=110)
             if toilet['kid']:
-                ...
+                img = Image.open('images/kid.png')
+                img = img.resize((100, 100))
+                my_img = ImageTk.PhotoImage(img)
+                Label(self.toilet_type, image=my_img, bg='gray').place(x=260, y=110)
 
 
 
