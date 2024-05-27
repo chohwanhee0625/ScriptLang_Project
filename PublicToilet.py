@@ -48,6 +48,8 @@ class PublicToilet:
             else:
                 toilet['si'] = toilet['addr'].split()[0]
 
+        if toilet['nappy'] != 'N':
+            print(toilet['si'], toilet['name'])
         toilets.append(toilet)
 
     def __init__(self, frame):
@@ -137,8 +139,8 @@ class PublicToilet:
             self.toilet_info.create_text(150, 15, font=name_font, text=toilet['name'])
 
             self.toilet_info.create_text(30, 45, font=temp_font, text="주소: ")
-            self.toilet_info.create_text(170, 45, font=temp_font, text=toilet['addr'][:13])
-            self.toilet_info.create_text(170, 60, font=temp_font, text=toilet['addr'][13:])
+            self.toilet_info.create_text(170, 45, font=temp_font, text=toilet['addr'][:18])
+            self.toilet_info.create_text(170, 60, font=temp_font, text=toilet['addr'][18:])
 
             self.toilet_info.create_text(52, 80, font=temp_font, text="화장실 종류: ")
             self.toilet_info.create_text(170, 80, font=temp_font, text=toilet['type'])
@@ -171,28 +173,42 @@ class PublicToilet:
             toilet = self.toilets_in_si[a[0]]
 
             self.toilet_type.create_text(190, 40, font=name_font, text=toilet['name']+' 화장실 시설 현황')
-            self.toilet_type.create_text(70, 80, font=temp_font, text="남성 장애인")
-            self.toilet_type.create_text(190, 80, font=temp_font, text="여성 장애인")
-            self.toilet_type.create_text(310, 80, font=temp_font, text="어린이용 화장실")
+            self.toilet_type.create_text(70, 80, font=temp_font, text="장애인 화장실")
+            dspn_m = Label(self.toilet_type, bg='white', width=100, height=100)
+            dspn_m.place(x=20, y=110)
+            self.toilet_type.create_text(190, 80, font=temp_font, text="어린이용 화장실")
+            kid = Label(self.toilet_type, bg='white', width=100, height=100)
+            kid.place(x=140, y=110)
+            self.toilet_type.create_text(300, 80, font=temp_font, text='기저귀 교환대')
+            nappy = Label(self.toilet_type, bg='white', width=100, height=100)
+            nappy.place(x=250, y=110)
 
             # 해당 시설 존재 시 해당 아이콘 이미지 출력
-            if toilet['dspsn_male']:
-                print(toilet['name'], "dspsn_male")
-                img = Image.open('images/dspsn_female.png')
-                img = img.resize((100, 100))
-                my_img = ImageTk.PhotoImage(img)
-                Label(self.toilet_type, image=my_img, bg='gray').place(x=20, y=110)
-            if toilet['dspsn_female']:
-                print(toilet['name'],"dspsn_female")
-                img = Image.open('images/dspsn_female.png')
-                img = img.resize((100, 100))
-                my_img = ImageTk.PhotoImage(img)
-                Label(self.toilet_type, image=my_img, bg='gray').place(x=140, y=110)
+            if toilet['dspsn_male'] and toilet['dspsn_female']:
+                my_img = PhotoImage(file='images/dspsn_male.png')
+                dspn_m.configure(image=my_img)
+                dspn_m.image = my_img
+            else:
+                dspn_m.configure()
+                dspn_m.image = None
+
             if toilet['kid']:
-                img = Image.open('images/kid.png')
-                img = img.resize((100, 100))
-                my_img = ImageTk.PhotoImage(img)
-                Label(self.toilet_type, image=my_img, bg='gray').place(x=260, y=110)
+                my_img = PhotoImage(file='images/kid.png')
+                kid.configure(image=my_img)
+                kid.image = my_img
+            else:
+                kid.configure()
+                kid.image = None
+
+            if toilet['nappy'] != 'N' and toilet['nappy']:
+                my_img = PhotoImage(file='images/nappy.png')
+                nappy.configure(image=my_img)
+                nappy.image = my_img
+                self.toilet_type.create_text(300, 100, text=toilet['nappy'])
+            else:
+                nappy.configure()
+                nappy.image = None
+                
 
 
 
