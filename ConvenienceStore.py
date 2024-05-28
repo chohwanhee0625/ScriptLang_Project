@@ -36,7 +36,7 @@ class ConvenienceStore:
             store['type'] = '세븐일레븐'
         elif 'mini' in store['name'] or 'MINI' in store['name'] or '미니스톱' in store['name']:
             store['type'] = '미니스톱'
-        elif '이마트' in store['name'] or 'e' in store['name']:
+        elif '이마트' in store['name'] or 'emart' in store['name']:
             store['type'] = '이마트24'
         else:
             store['type'] = '기타'

@@ -1,7 +1,6 @@
 import library_file
 from library_file import *
-from PIL import Image, ImageTk
-import PIL
+
 
 class PublicToilet:
     url = "https://openapi.gg.go.kr/Publtolt"
@@ -48,8 +47,6 @@ class PublicToilet:
             else:
                 toilet['si'] = toilet['addr'].split()[0]
 
-        if toilet['nappy'] != 'N':
-            print(toilet['si'], toilet['name'])
         toilets.append(toilet)
 
     def __init__(self, frame):
@@ -172,7 +169,7 @@ class PublicToilet:
         if a:
             toilet = self.toilets_in_si[a[0]]
 
-            self.toilet_type.create_text(190, 40, font=name_font, text=toilet['name']+' 화장실 시설 현황')
+            self.toilet_type.create_text(190, 40, font=name_font, text=toilet['name'] + ' 화장실 시설 현황')
             self.toilet_type.create_text(70, 80, font=temp_font, text="장애인 화장실")
             dspn_m = Label(self.toilet_type, bg='white', width=100, height=100)
             dspn_m.place(x=20, y=110)
@@ -208,9 +205,6 @@ class PublicToilet:
             else:
                 nappy.configure()
                 nappy.image = None
-                
-
-
 
     def add_favorite(self):
         a = self.toilet_list.curselection()
@@ -218,6 +212,3 @@ class PublicToilet:
             toilet = self.toilets_in_si[a[0]]
             if toilet not in library_file.favorites:
                 library_file.favorites.append(toilet)
-
-
-

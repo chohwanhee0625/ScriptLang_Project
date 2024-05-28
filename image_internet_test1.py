@@ -1,7 +1,6 @@
-# 네이버 검색 API 예제 - 블로그 검색
-import os
-import sys
+# 네이버 검색 API 예제
 import urllib.request
+
 client_id = "xFNxfdv0x0hZx61b5kW_"
 client_secret = "62ROLhKEWc"
 encText = urllib.parse.quote("시흥 +소망공원 -야구")
