@@ -25,7 +25,9 @@ class ConvenienceStore:
             "si": item.findtext("SIGUN_NM"),
             "type": "기타",
             "telno": "031-000-0000",
-            "data_type": "편의점"
+            "data_type": "편의점",
+            "lat": item.findtext("REFINE_WGS84_LAT"),
+            "lng": item.findtext("REFINE_WGS84_LOGT")
         }
 
         if 'GS' in store['name'] or '지에스' in store['name']:
@@ -42,6 +44,9 @@ class ConvenienceStore:
             store['type'] = '기타'
 
         stores.append(store)
+
+        Google_API_Key = 'AIzaSyCzFgc9OGnXckq1-JNhSCVGo9zIq1kSWcE'
+        gmaps = Client(key=Google_API_Key)
 
 
     def __init__(self, frame):
@@ -99,9 +104,9 @@ class ConvenienceStore:
         self.show_types()
 
         # 지도 이미지 캔버스 생성
-        map_img = Canvas(frame3, width=300, height=250, bg='white')
-        map_img.pack()
-
+        self.map_img = Canvas(frame3, width=300, height=250, bg='white')
+        self.map_img.pack()
+        self.show_map()
 
 
     def show_stores(self):
@@ -117,6 +122,7 @@ class ConvenienceStore:
     def on_si_select(self, event):
         self.show_stores()
         self.show_types()
+        self.show_map()
 
     def show_info(self):
         self.con_info.delete('all')
@@ -179,5 +185,23 @@ class ConvenienceStore:
             if store not in library_file.favorites:
                 library_file.favorites.append(store)
 
+    def show_map(self):
+        si_name = self.selected_si.get()
+        si_center = self.gmaps.geocode(f"{si_name}")[0]['geometry']['location']
+        si_map_url = (f"https://maps.googleapis.com/maps/api/staticmap?center="
+                      f"{si_center['lat']},{si_center['lng']}&zoom=14&size=300x250&maptype=roadmap")
 
+        # 선택한 시/군의 시설 위치 마커 추가
+        for store in self.stores_in_si:
+            if store['lat'] and store['lng']:
+                lat, lng = float(store['lat']), float(store['lng'])
+                marker_url = f"&markers=color:red%7C{lat},{lng}"
+                si_map_url += marker_url
+
+            # 지도 이미지 업데이트
+            response = requests.get(si_map_url + '&key=' + self.Google_API_Key)
+            image = Image.open(io.BytesIO(response.content))
+            photo = ImageTk.PhotoImage(image)
+            self.map_img.configure(image=photo)
+            self.map_img.image = photo
 

@@ -28,7 +28,9 @@ class UrbanPark:
             "manage": item.findtext("MANAGE_INST_NM"),
             "area": item.findtext("PARK_AR"),
             "facil": [],
-            "data_type": "공원"
+            "data_type": "공원",
+            "lat": item.findtext("REFINE_WGS84_LAT"),
+            "lng": item.findtext("REFINE_WGS84_LOGT")
         }
         park['facil'].append(item.findtext("PARK_SPORTS_FACLT_DTLS"))
         park['facil'].append(item.findtext("PARK_AMSMT_FACLT_DTLS"))

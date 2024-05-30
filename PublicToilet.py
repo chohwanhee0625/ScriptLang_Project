@@ -28,7 +28,9 @@ class PublicToilet:
             "time": item.findtext("OPEN_TM_INFO"),
             "unisex": item.findtext("MALE_FEMALE_CMNUSE_TOILET_YN"),
             "facil": [],
-            "data_type": "공중화장실"
+            "data_type": "공중화장실",
+            "lat": item.findtext("REFINE_WGS84_LAT"),
+            "lng": item.findtext("REFINE_WGS84_LOGT")
         }
         if item.findtext("MALE_DSPSN_WTRCLS_CNT") and item.findtext("MALE_DSPSN_UIL_CNT"):
             toilet['dspsn_male'] = True

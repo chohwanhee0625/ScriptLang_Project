@@ -1,5 +1,6 @@
 # 네이버 검색 API 예제
 import urllib.request
+from tkinter import *
 
 client_id = "xFNxfdv0x0hZx61b5kW_"
 client_secret = "62ROLhKEWc"
@@ -15,3 +16,6 @@ if(rescode==200):
     print(response_body.decode('utf-8'))
 else:
     print("Error Code:" + rescode)
+
+
+

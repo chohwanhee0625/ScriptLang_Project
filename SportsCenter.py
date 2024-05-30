@@ -24,7 +24,9 @@ class SportsCenter:
             "addr": item.findtext("REFINE_ROADNM_ADDR"),
             "si": item.findtext("SIGUN_NM"),
             "telno": item.findtext("CONTCT_NO"),
-            "data_type": "체육시설"
+            "data_type": "체육시설",
+            "lat": item.findtext("REFINE_WGS84_LAT"),
+            "lng": item.findtext("REFINE_WGS84_LOGT")
         }
         if not sport['addr']:
             sport['addr'] = '정보 없음'
