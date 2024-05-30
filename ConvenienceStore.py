@@ -198,10 +198,10 @@ class ConvenienceStore:
                 marker_url = f"&markers=color:red%7C{lat},{lng}"
                 si_map_url += marker_url
 
-            # 지도 이미지 업데이트
-            response = requests.get(si_map_url + '&key=' + self.Google_API_Key)
-            image = Image.open(io.BytesIO(response.content))
-            photo = ImageTk.PhotoImage(image)
-            self.map_img.configure(image=photo)
-            self.map_img.image = photo
+        # 지도 이미지 업데이트
+        response = requests.get(si_map_url + '&key=' + self.Google_API_Key)
+        image = Image.open(io.BytesIO(response.content))
+        photo = ImageTk.PhotoImage(image)
+        self.map_img.configure(image=photo)
+        self.map_img.image = photo
 

@@ -5,6 +5,9 @@ from library_file import *
 
 class Favorites:
     favorites = library_file.favorites
+    Google_API_Key = 'AIzaSyCzFgc9OGnXckq1-JNhSCVGo9zIq1kSWcE'
+    gmaps = Client(key=Google_API_Key)
+
     def __init__(self, frame):
 
         button_frame = Frame(frame)
@@ -58,8 +61,8 @@ class Favorites:
         # 간격 조절을 위한 더미 프레임
         Frame(frame3, height=10).pack()
 
-        # 선택 항목 지도 이미지 캔버스 생성
-        self.fav_map = Canvas(frame3, width=300, height=200, bg='white')
+        # 선택 항목 지도 이미지 라벨 생성
+        self.fav_map = Label(frame3, width=300, height=200, bg='white')
         self.fav_map.pack()
 
     def show_favorites(self):
@@ -78,7 +81,34 @@ class Favorites:
 
         self.show_favorites()
 
+    def show_map(self):
+        a = self.favorite_list.curselection()
+        if a:
+            target = self.favorites[a[0]]
+            si_name = target['si']
+            si_center = self.gmaps.geocode(f"{si_name}")[0]['geometry']['location']
+            print(si_center)
+            lat, lng = float(target['lat']), float(target['lng'])
+            print(lat, lng)
+            si_map_url = (f"https://maps.googleapis.com/maps/api/staticmap?center="
+                          f"{lat},{lng}&zoom=17&size=300x250&maptype=roadmap")
+
+            # 위치 마커 추가
+            if target['lat'] and target['lng']:
+                lat, lng = float(target['lat']), float(target['lng'])
+                marker_url = f"&markers=color:red%7C{lat},{lng}"
+                si_map_url += marker_url
+
+            # 지도 이미지 업데이트
+            response = requests.get(si_map_url + '&key=' + self.Google_API_Key)
+            image = Image.open(io.BytesIO(response.content))
+            photo = ImageTk.PhotoImage(image)
+            self.fav_map.configure(image=photo)
+            self.fav_map.image = photo
+
     def show_info(self):
+        self.show_map()
+
         self.fav_info.delete('all')
 
         name_font = font.Font(size=13, weight='bold', family='Consolas')
