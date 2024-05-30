@@ -1,4 +1,7 @@
-import UrbanPark
+import mysmtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
 import library_file
 from library_file import *
 
@@ -7,6 +10,14 @@ class Favorites:
     favorites = library_file.favorites
     Google_API_Key = 'AIzaSyCzFgc9OGnXckq1-JNhSCVGo9zIq1kSWcE'
     gmaps = Client(key=Google_API_Key)
+
+    # smtp 정보
+    host = "smtp.gmail.com"  # Gmail SMTP 서버 주소.
+    port = "587"
+
+    sender_addr = "great1625@tukorea.ac.kr"
+    passwd = "vdfi vwpx pqca ggde"
+
 
     def __init__(self, frame):
 
@@ -17,7 +28,7 @@ class Favorites:
         Button(button_frame, text='갱신', command=self.show_favorites).pack(side=LEFT)
 
         Button(button_frame, text='삭제', command=self.delete_favorite).pack(side=LEFT)
-        Button(button_frame, text='메일').pack(side=LEFT)
+        Button(button_frame, text='메일', command=self.send_mail).pack(side=LEFT)
 
         # 정보 출력을 위한 버튼, 나중에 리스트 항목 클릭 시 정보 출력하도록 변경
         Button(frame, width=5, text='출력', command=self.show_info).pack()
@@ -85,11 +96,7 @@ class Favorites:
         a = self.favorite_list.curselection()
         if a:
             target = self.favorites[a[0]]
-            si_name = target['si']
-            si_center = self.gmaps.geocode(f"{si_name}")[0]['geometry']['location']
-            print(si_center)
             lat, lng = float(target['lat']), float(target['lng'])
-            print(lat, lng)
             si_map_url = (f"https://maps.googleapis.com/maps/api/staticmap?center="
                           f"{lat},{lng}&zoom=17&size=300x250&maptype=roadmap")
 
