@@ -45,8 +45,8 @@ class ConvenienceStore:
 
         stores.append(store)
 
-        Google_API_Key = 'AIzaSyCzFgc9OGnXckq1-JNhSCVGo9zIq1kSWcE'
-        gmaps = Client(key=Google_API_Key)
+    Google_API_Key = 'AIzaSyCzFgc9OGnXckq1-JNhSCVGo9zIq1kSWcE'
+    gmaps = Client(key=Google_API_Key)
 
 
     def __init__(self, frame):
@@ -103,8 +103,8 @@ class ConvenienceStore:
         self.con_type.pack(side=LEFT)
         self.show_types()
 
-        # 지도 이미지 캔버스 생성
-        self.map_img = Canvas(frame3, width=300, height=250, bg='white')
+        # 지도 이미지 라벨 생성
+        self.map_img = Label(frame3, width=300, height=250, bg='white')
         self.map_img.pack()
         self.show_map()
 
@@ -189,7 +189,7 @@ class ConvenienceStore:
         si_name = self.selected_si.get()
         si_center = self.gmaps.geocode(f"{si_name}")[0]['geometry']['location']
         si_map_url = (f"https://maps.googleapis.com/maps/api/staticmap?center="
-                      f"{si_center['lat']},{si_center['lng']}&zoom=14&size=300x250&maptype=roadmap")
+                      f"{si_center['lat']},{si_center['lng']}&zoom=12&size=300x250&maptype=roadmap")
 
         # 선택한 시/군의 시설 위치 마커 추가
         for store in self.stores_in_si:

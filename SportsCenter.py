@@ -34,6 +34,9 @@ class SportsCenter:
             sport['telno'] = '정보 없음'
         sports.append(sport)
 
+    Google_API_Key = 'AIzaSyCzFgc9OGnXckq1-JNhSCVGo9zIq1kSWcE'
+    gmaps = Client(key=Google_API_Key)
+
     def __init__(self, frame):
 
         self.selected_si = StringVar()
@@ -90,9 +93,10 @@ class SportsCenter:
         self.sport_type.pack(side=LEFT)
         self.show_types()
 
-        # 지도 이미지 캔버스 생성
-        map_img = Canvas(frame3, width=300, height=250, bg='white')
-        map_img.pack()
+        # 지도 이미지 라벨 생성
+        self.map_img = Label(frame3, width=300, height=250, bg='white')
+        self.map_img.pack()
+        self.show_map()
 
     def show_sports(self):
         self.sport_list.delete(0, END)
@@ -107,6 +111,7 @@ class SportsCenter:
     def on_si_select(self, event):
         # 콤보박스 시군 선택 시 해당 시에 맞는 정보 업데이트 이벤트 함수
         self.show_sports()
+        self.show_map()
 
     def show_info(self):
         # 리스트박스 오른쪽에 정보를 나타내는 이벤트 함수
@@ -140,5 +145,23 @@ class SportsCenter:
             if sport not in library_file.favorites:
                 library_file.favorites.append(sport)
 
+    def show_map(self):
+        si_name = self.selected_si.get()
+        si_center = self.gmaps.geocode(f"{si_name}")[0]['geometry']['location']
+        si_map_url = (f"https://maps.googleapis.com/maps/api/staticmap?center="
+                      f"{si_center['lat']},{si_center['lng']}&zoom=12&size=300x250&maptype=roadmap")
 
+        # 선택한 시/군의 시설 위치 마커 추가
+        for sport in self.sports_in_si:
+            if sport['lat'] and sport['lng']:
+                lat, lng = float(sport['lat']), float(sport['lng'])
+                marker_url = f"&markers=color:red%7C{lat},{lng}"
+                si_map_url += marker_url
+
+            # 지도 이미지 업데이트
+            response = requests.get(si_map_url + '&key=' + self.Google_API_Key)
+            image = Image.open(io.BytesIO(response.content))
+            photo = ImageTk.PhotoImage(image)
+            self.map_img.configure(image=photo)
+            self.map_img.image = photo
 
