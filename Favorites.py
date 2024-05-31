@@ -117,20 +117,23 @@ class Favorites:
     def input_mail(self):
         self.mail_win = Tk()
         self.mail_win.title("메일 전송")
-        self.mail_win.geometry("300x200")
+        self.mail_win.geometry("250x100")
 
-        Label(self.mail_win, text="메일 주소: ", font=('arial', 14)).pack(side=LEFT)
+        Label(self.mail_win, text="메일 주소 입력", font=('Consolas', 13)).pack()
         recipient_addr = StringVar()
-        Entry(self.mail_win, width=20, textvariable=recipient_addr).pack(side=LEFT)
-        Button(self.mail_win, text="전송", command=lambda addr=recipient_addr.get():self.send_mail(addr)).pack()
+        self.entry = Entry(self.mail_win, width=20, textvariable=recipient_addr)
+        self.entry.pack()
+        Button(self.mail_win, text="전송", command=self.send_mail).pack()
 
         self.mail_win.mainloop()
 
-    def send_mail(self, addr):
-        if not addr or "@" not in addr:
-            showerror('잘못된 입력', '이메일 주소를 다시 입력해 주세요.')
-        elif not self.favorites:
+    def send_mail(self):
+        addr = self.entry.get()
+        print(addr, type(addr))
+        if not self.favorites:
             showerror('error', '즐겨찾기 목록 없음')
+        elif not addr or "@" not in addr:
+            showerror('error', '이메일 주소를 다시 입력해 주세요.')
         else:
             title = "즐겨찾기 목록"
             msg = MIMEMultipart('alternative')
@@ -171,14 +174,18 @@ class Favorites:
                 """
 
             # MIMEText 객체 생성 (HTML 형식)
-            msgPart = MIMEText(html, 'html')
+            msgPart = MIMEText(html, 'html', _charset='UTF-8')
             msg.attach(msgPart)
 
+
             # SMTP 서버를 사용하여 이메일 전송
-            with smtplib.SMTP('smtp.example.com', 587) as server:
+            with smtplib.SMTP(self.host, self.port) as server:
+                # server.set_debuglevel(1)
+                server.ehlo()
                 server.starttls()
                 server.login(self.sender_addr, self.passwd)
-                server.sendmail(self.sender_addr, addr, msg.as_string())
+                server.sendmail(self.sender_addr, [addr], msg.as_string())
+                server.close()
 
             showinfo('Success', "전송 성공!")
             self.mail_win.destroy()
