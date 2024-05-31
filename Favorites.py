@@ -2,6 +2,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from tkinter.messagebox import *
+from operator import itemgetter
 
 import library_file
 from library_file import *
@@ -9,24 +10,25 @@ from library_file import *
 
 class Favorites:
     favorites = library_file.favorites
+
+    # 구글 maps
     Google_API_Key = 'AIzaSyCzFgc9OGnXckq1-JNhSCVGo9zIq1kSWcE'
     gmaps = Client(key=Google_API_Key)
 
     # smtp 정보
     host = "smtp.gmail.com"  # Gmail SMTP 서버 주소.
-    port = "587"
-
+    port = 587
     sender_addr = "great1625@tukorea.ac.kr"
     passwd = "vdfi vwpx pqca ggde"
 
 
     def __init__(self, frame):
 
-        button_frame = Frame(frame)
+        button_frame = Frame(frame, height=100)
         button_frame.pack()
 
         # 갱신용 버튼, 나중엔 추가하면 자동으로 갱신되게 바꿔보자
-        Button(button_frame, text='갱신', command=self.show_favorites).pack(side=LEFT)
+        Button(button_frame, text='갱신', command=self.show_favorites, ).pack(side=LEFT)
 
         Button(button_frame, text='삭제', command=self.delete_favorite).pack(side=LEFT)
         Button(button_frame, text='메일', command=self.input_mail).pack(side=LEFT)
@@ -80,6 +82,7 @@ class Favorites:
     def show_favorites(self):
         self.favorite_list.delete(0, END)
 
+        self.favorites.sort(key=itemgetter('data_type', 'addr'))
         # 즐겨찾기 목록에 추가
         for favorite in self.favorites:
             if any(type == favorite['data_type'] for type in ['편의점', '공원', '체육시설', '공중화장실']):
@@ -129,10 +132,9 @@ class Favorites:
 
     def send_mail(self):
         addr = self.entry.get()
-        print(addr, type(addr))
         if not self.favorites:
             showerror('error', '즐겨찾기 목록 없음')
-        elif not addr or "@" not in addr:
+        elif not addr or "@" not in addr or '.' not in addr:
             showerror('error', '이메일 주소를 다시 입력해 주세요.')
         else:
             title = "즐겨찾기 목록"
@@ -176,7 +178,6 @@ class Favorites:
             # MIMEText 객체 생성 (HTML 형식)
             msgPart = MIMEText(html, 'html', _charset='UTF-8')
             msg.attach(msgPart)
-
 
             # SMTP 서버를 사용하여 이메일 전송
             with smtplib.SMTP(self.host, self.port) as server:
