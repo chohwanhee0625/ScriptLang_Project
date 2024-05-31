@@ -1,6 +1,7 @@
-import mysmtplib
+import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from tkinter.messagebox import *
 
 import library_file
 from library_file import *
@@ -28,7 +29,7 @@ class Favorites:
         Button(button_frame, text='갱신', command=self.show_favorites).pack(side=LEFT)
 
         Button(button_frame, text='삭제', command=self.delete_favorite).pack(side=LEFT)
-        Button(button_frame, text='메일', command=self.send_mail).pack(side=LEFT)
+        Button(button_frame, text='메일', command=self.input_mail).pack(side=LEFT)
 
         # 정보 출력을 위한 버튼, 나중에 리스트 항목 클릭 시 정보 출력하도록 변경
         Button(frame, width=5, text='출력', command=self.show_info).pack()
@@ -112,6 +113,75 @@ class Favorites:
             photo = ImageTk.PhotoImage(image)
             self.fav_map.configure(image=photo)
             self.fav_map.image = photo
+
+    def input_mail(self):
+        self.mail_win = Tk()
+        self.mail_win.title("메일 전송")
+        self.mail_win.geometry("300x200")
+
+        Label(self.mail_win, text="메일 주소: ", font=('arial', 14)).pack(side=LEFT)
+        recipient_addr = StringVar()
+        Entry(self.mail_win, width=20, textvariable=recipient_addr).pack(side=LEFT)
+        Button(self.mail_win, text="전송", command=lambda addr=recipient_addr.get():self.send_mail(addr)).pack()
+
+        self.mail_win.mainloop()
+
+    def send_mail(self, addr):
+        if not addr or "@" not in addr:
+            showerror('잘못된 입력', '이메일 주소를 다시 입력해 주세요.')
+        elif not self.favorites:
+            showerror('error', '즐겨찾기 목록 없음')
+        else:
+            title = "즐겨찾기 목록"
+            msg = MIMEMultipart('alternative')
+            msg['Subject'] = title
+            msg['From'] = self.sender_addr
+            msg['To'] = addr
+
+            # HTML 테이블 시작
+            html = """\
+                <html>
+                  <head></head>
+                  <body>
+                    <h2>즐겨찾기 목록</h2>
+                    <table border="1">
+                      <tr>
+                """
+
+            # 테이블 헤더 추가 (dict 키 값으로)
+            if self.favorites:
+                for key in self.favorites[0].keys():
+                    if key in ['name', 'addr', 'telno', 'data_type']:
+                        html += f"<th>{key}</th>"
+                html += "</tr>"
+
+                # 테이블 행 추가
+                for item in self.favorites:
+                    html += "<tr>"
+                    for key, value in item.items():
+                        if key in ['name', 'addr', 'telno', 'data_type']:
+                            html += f"<td>{value}</td>"
+                    html += "</tr>"
+
+            # HTML 테이블 종료
+            html += """\
+                    </table>
+                  </body>
+                </html>
+                """
+
+            # MIMEText 객체 생성 (HTML 형식)
+            msgPart = MIMEText(html, 'html')
+            msg.attach(msgPart)
+
+            # SMTP 서버를 사용하여 이메일 전송
+            with smtplib.SMTP('smtp.example.com', 587) as server:
+                server.starttls()
+                server.login(self.sender_addr, self.passwd)
+                server.sendmail(self.sender_addr, addr, msg.as_string())
+
+            showinfo('Success', "전송 성공!")
+            self.mail_win.destroy()
 
     def show_info(self):
         self.show_map()
