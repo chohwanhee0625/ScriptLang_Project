@@ -97,7 +97,7 @@ class UrbanPark:
         Button(frame, width=5, text='출력', command=self.show_info).pack()
 
         # 선택 항목 공원 이미지 출력 캔버스
-        self.park_type = Canvas(frame3, width=380, height=250, bg='white')
+        self.park_type = Frame(frame3, width=380, height=250, bg='white')
         self.park_type.pack(side=LEFT)
         self.show_types()
 
