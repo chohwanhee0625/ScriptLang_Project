@@ -6,6 +6,7 @@ from UrbanPark import *
 from SportsCenter import *
 from PublicToilet import *
 
+
 class MainGUI:
     def __init__(self):
         window = Tk()
