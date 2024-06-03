@@ -83,6 +83,7 @@ class Favorites:
 
     def show_favorites(self):
         self.favorite_list.delete(0, END)
+        spam.fileinit()     # C 연동, "즐겨찾기 상호명.txt" 파일 초기화
 
         self.favorites.sort(key=itemgetter('data_type', 'addr'))
         # 즐겨찾기 목록에 추가
