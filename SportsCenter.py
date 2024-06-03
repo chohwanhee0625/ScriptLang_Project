@@ -78,7 +78,6 @@ class SportsCenter:
         scrollbar.config(command=self.sport_list.yview)
 
         self.si_combo.bind("<<ComboboxSelected>>", self.on_si_select)
-
         self.show_sports()
 
         # 체육시설 정보 출력 캔버스 생성
@@ -86,7 +85,7 @@ class SportsCenter:
         self.sport_info.pack(side=RIGHT)
 
         # 정보 출력을 위한 버튼, 나중에 리스트 항목 클릭 시 정보 출력하도록 변경
-        Button(frame, width=5, text='출력', command=self.show_info).pack()
+        Button(frame, width=5, text='출력', command=self.on_item_select).pack()
 
         # 시설 이미지 라벨 생성
         self.img_frame = Frame(frame3, width=380, height=250, bg='white')
@@ -101,6 +100,23 @@ class SportsCenter:
         self.map_img.pack()
         self.show_map()
 
+    def on_si_select(self, event):
+        # 콤보박스 시군 선택 시 해당 시에 맞는 정보 업데이트 이벤트 함수
+        self.show_sports()
+        self.show_map()
+
+    def on_item_select(self):
+        # 출력 버튼 클릭 시 선택 항목 정보 출력 이벤트 함수
+        self.show_info()
+        self.show_image()
+
+    def add_favorite(self):
+        a = self.sport_list.curselection()
+        if a:
+            sport = self.sports_in_si[a[0]]
+            if sport not in library_file.favorites:
+                library_file.favorites.append(sport)
+
     def show_sports(self):
         self.sport_list.delete(0, END)
 
@@ -111,13 +127,7 @@ class SportsCenter:
         for sport in self.sports_in_si:
             self.sport_list.insert(END, f"{sport['name']} ({sport['type']})")
 
-    def on_si_select(self, event):
-        # 콤보박스 시군 선택 시 해당 시에 맞는 정보 업데이트 이벤트 함수
-        self.show_sports()
-        self.show_map()
-
     def show_info(self):
-        self.show_image()
         # 리스트박스 오른쪽에 정보를 나타내는 이벤트 함수
         self.sport_info.delete('all')
 
@@ -182,13 +192,6 @@ class SportsCenter:
             else:
                 self.img_label.configure()
                 self.img_label.image = None
-
-    def add_favorite(self):
-        a = self.sport_list.curselection()
-        if a:
-            sport = self.sports_in_si[a[0]]
-            if sport not in library_file.favorites:
-                library_file.favorites.append(sport)
 
     def show_map(self):
         si_name = self.selected_si.get()
