@@ -26,14 +26,15 @@ class Favorites:
 
     def __init__(self, frame):
 
-        button_frame = Frame(frame, height=100)
+        button_frame = Frame(frame, width=800, height=80)
         button_frame.pack()
+        button_frame.pack_propagate(False)
 
         # 갱신용 버튼, 나중엔 추가하면 자동으로 갱신되게 바꿔보자
-        Button(button_frame, text='갱신', command=self.show_favorites, ).pack(side=LEFT)
+        Button(button_frame, text='갱신', command=self.show_favorites).place(x=50, y=50)
 
-        Button(button_frame, text='삭제', command=self.delete_favorite).pack(side=LEFT)
-        Button(button_frame, text='메일', command=self.input_mail).pack(side=LEFT)
+        Button(button_frame, text='삭제', command=self.delete_favorite).place(x=100, y=50)
+        Button(button_frame, text='메일', command=self.input_mail).place(x=150, y=50)
 
         # 정보 출력을 위한 버튼, 나중에 리스트 항목 클릭 시 정보 출력하도록 변경
         Button(frame, width=5, text='출력', command=self.show_info).pack()
@@ -48,9 +49,6 @@ class Favorites:
         # 리스트 박스와 스크롤바를 담을 프레임
         frame2 = Frame(frame1)
         frame2.pack(side=LEFT)
-
-        # 간격 조절을 위한 더미 프레임
-        Frame(frame1, width=10).pack(side=LEFT)
 
         # 선택 항목 정보와 지도 이미지를 담을 프레임
         frame3 = Frame(frame1)
@@ -78,7 +76,11 @@ class Favorites:
         Frame(frame3, height=10).pack()
 
         # 선택 항목 지도 이미지 라벨 생성
-        self.fav_map = Label(frame3, width=300, height=200, bg='white')
+        self.map_frame = Frame(frame3, width=300, height=200, bg='white')
+        self.map_frame.pack()
+        self.map_frame.pack_propagate(False)
+
+        self.fav_map = Label(self.map_frame, bg='white')
         self.fav_map.pack()
 
     def show_favorites(self):
