@@ -151,3 +151,9 @@ fabric.properties
 # *.ipr
 
 # End of https://www.gitignore.io/api/python,pycharm
+__pycache__/UrbanPark.cpython-312.pyc
+__pycache__/library_file.cpython-312.pyc
+__pycache__/Favorites.cpython-312.pyc
+__pycache__/ConvenienceStore.cpython-312.pyc
+.idea/ScriptLang_Project.iml
+.idea/misc.xml
