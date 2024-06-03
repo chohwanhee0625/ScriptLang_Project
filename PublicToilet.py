@@ -56,17 +56,29 @@ class PublicToilet:
 
     def __init__(self, frame):
 
+        button_frame = Frame(frame, width=800, height=80)
+        button_frame.pack()
+        button_frame.pack_propagate(False)
+
         self.selected_si = StringVar()
         self.selected_si.set("성남시")  # 초기값 설정
         self.si_options = set()
         for toilet in self.toilets:
             if toilet['si']:
                 self.si_options.add(toilet['si'])
-        self.si_combo = ttk.Combobox(frame, textvariable=self.selected_si, values=list(self.si_options))
-        self.si_combo.pack()
+        self.si_combo = ttk.Combobox(button_frame, textvariable=self.selected_si, values=list(self.si_options))
+        self.si_combo.place(x=350, y=20)
 
-        # 즐겨찾기 버튼
-        Button(frame, width=2, text='즐찾', command=self.add_favorite).pack()
+        # 즐겨찾기 버튼, 출력 버튼
+        image = PhotoImage(file='images/favorites.png')
+        b1 = Button(button_frame, image=image, command=self.add_favorite)
+        b1.image = image
+        b1.place(x=70, y=30)
+
+        image = PhotoImage(file='images/next.png')
+        b2 = Button(button_frame, image=image, command=self.show_info)
+        b2.image = image
+        b2.place(x=130, y=30)
 
         # 메인 프레임
         frame1 = Frame(frame)
@@ -101,9 +113,6 @@ class PublicToilet:
         # 화장실 정보 출력 캔버스 생성
         self.toilet_info = Canvas(frame1, width=300, height=200, bg='white')
         self.toilet_info.pack(side=RIGHT)
-
-        # 정보 출력을 위한 버튼, 나중에 리스트 항목 클릭 시 정보 출력하도록 변경
-        Button(frame, width=5, text='출력', command=self.show_info).pack()
 
         # 선택 항목 화장실 시설 표시 캔버스 (장애인 화장실, 기저귀 교환대, 어린이용 화장실 여부)
         self.toilet_type = Canvas(frame3, width=380, height=250, bg='white')

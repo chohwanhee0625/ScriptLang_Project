@@ -51,18 +51,30 @@ class ConvenienceStore:
 
     def __init__(self, frame):
 
+        button_frame = Frame(frame, width=800, height=80)
+        button_frame.pack()
+        button_frame.pack_propagate(False)
+
         self.selected_si = StringVar()
         self.selected_si.set("시흥시")  # 초기값 설정
         self.si_options = set()
         for store in self.stores:
             if store['si']:
                 self.si_options.add(store['si'])
-        self.si_combo = ttk.Combobox(frame, textvariable=self.selected_si, values=list(self.si_options))
-        self.si_combo.pack()
+        self.si_combo = ttk.Combobox(button_frame, textvariable=self.selected_si, values=list(self.si_options))
+        self.si_combo.place(x=350, y=20)
 
-        # 즐겨찾기 버튼
-        Button(frame, width=2, text='즐찾', command=self.add_favorite).pack()
-        
+        # 즐겨찾기 버튼, 출력 버튼
+        image = PhotoImage(file='images/favorites.png')
+        b1 = Button(button_frame, image=image, command=self.add_favorite)
+        b1.image=image
+        b1.place(x=70, y=30)
+
+        image = PhotoImage(file='images/next.png')
+        b2 = Button(button_frame, image=image, command=self.show_info)
+        b2.image=image
+        b2.place(x=130, y=30)
+
         # 메인 프레임
         frame1 = Frame(frame)
         frame1.pack()
@@ -96,7 +108,6 @@ class ConvenienceStore:
         # 편의점 정보 출력 캔버스 생성
         self.con_info = Canvas(frame1, width=300, height=200, bg='white')
         self.con_info.pack(side=RIGHT)
-        Button(frame, width=5, command=self.show_info).pack()
 
         # 통계 캔버스 생성, 막대 그래프 그리기
         self.con_type = Canvas(frame3, width=380, height=250, bg='white')

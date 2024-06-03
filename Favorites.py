@@ -31,16 +31,28 @@ class Favorites:
         button_frame.pack_propagate(False)
 
         # 갱신용 버튼, 나중엔 추가하면 자동으로 갱신되게 바꿔보자
-        Button(button_frame, text='갱신', command=self.show_favorites).place(x=50, y=50)
+        image = PhotoImage(file='images/refresh.png')
+        b1 = Button(button_frame, image=image, command=self.show_favorites)
+        b1.image = image
+        b1.place(x=70, y=30)
 
-        Button(button_frame, text='삭제', command=self.delete_favorite).place(x=100, y=50)
-        Button(button_frame, text='메일', command=self.input_mail).place(x=150, y=50)
+        image = PhotoImage(file='images/cancel.png')
+        b2 = Button(button_frame, image=image, command=self.delete_favorite)
+        b2.image = image
+        b2.place(x=130, y=30)
 
-        # 정보 출력을 위한 버튼, 나중에 리스트 항목 클릭 시 정보 출력하도록 변경
-        Button(frame, width=5, text='출력', command=self.show_info).pack()
+        image = PhotoImage(file='images/gmail.png')
+        b3 = Button(button_frame, image=image, command=self.input_mail)
+        b3.image = image
+        b3.place(x=190, y=30)
+
+        image = PhotoImage(file='images/next.png')
+        b4 = Button(button_frame, image=image, command=self.show_info)
+        b4.image = image
+        b4.place(x=250, y=30)
 
         # 간격 조절을 위한 더미 프레임
-        Frame(frame, height=20).pack()
+        Frame(frame, height=10).pack()
 
         # 메인 프레임
         frame1 = Frame(frame)

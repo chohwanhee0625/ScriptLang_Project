@@ -47,17 +47,29 @@ class UrbanPark:
 
     def __init__(self, frame):
 
+        button_frame = Frame(frame, width=800, height=80)
+        button_frame.pack()
+        button_frame.pack_propagate(False)
+
         self.selected_si = StringVar()
         self.selected_si.set("시흥시")  # 초기값 설정
         self.si_options = set()
         for park in self.parks:
             if park['si']:
                 self.si_options.add(park['si'])
-        self.si_combo = ttk.Combobox(frame, textvariable=self.selected_si, values=list(self.si_options))
-        self.si_combo.pack()
+        self.si_combo = ttk.Combobox(button_frame, textvariable=self.selected_si, values=list(self.si_options))
+        self.si_combo.place(x=350, y=20)
 
-        # 즐겨찾기 버튼
-        Button(frame, width=2, text='즐찾', command=self.add_favorite).pack()
+        # 즐겨찾기 버튼, 출력 버튼
+        image = PhotoImage(file='images/favorites.png')
+        b1 = Button(button_frame, image=image, command=self.add_favorite)
+        b1.image = image
+        b1.place(x=70, y=30)
+
+        image = PhotoImage(file='images/next.png')
+        b2 = Button(button_frame, image=image, command=self.show_info)
+        b2.image = image
+        b2.place(x=130, y=30)
 
         # 메인 프레임
         frame1 = Frame(frame)
@@ -93,9 +105,6 @@ class UrbanPark:
         self.park_info = Canvas(frame1, width=300, height=200, bg='white')
         self.park_info.pack(side=RIGHT)
         
-        # 정보 출력을 위한 버튼, 나중에 리스트 항목 클릭 시 정보 출력하도록 변경
-        Button(frame, width=5, text='출력', command=self.show_info).pack()
-
         # 시설 이미지 라벨 생성
         self.img_frame = Frame(frame3, width=380, height=250, bg='white')
         self.img_frame.pack(side=LEFT)
