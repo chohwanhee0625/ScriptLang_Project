@@ -7,6 +7,8 @@ from operator import itemgetter
 import library_file
 from library_file import *
 
+import spam
+
 
 class Favorites:
     favorites = library_file.favorites
@@ -87,6 +89,8 @@ class Favorites:
         for favorite in self.favorites:
             if any(type == favorite['data_type'] for type in ['편의점', '공원', '체육시설', '공중화장실']):
                 self.favorite_list.insert(END, f"{favorite['name']} ({favorite['type']})")
+                spam.fileadder(favorite['name'])    # C 연동, "즐겨찾기 상호명.txt" 파일 갱신
+
 
     def delete_favorite(self):
         a = self.favorite_list.curselection()
