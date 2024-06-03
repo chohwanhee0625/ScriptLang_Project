@@ -96,10 +96,13 @@ class UrbanPark:
         # 정보 출력을 위한 버튼, 나중에 리스트 항목 클릭 시 정보 출력하도록 변경
         Button(frame, width=5, text='출력', command=self.show_info).pack()
 
-        # 선택 항목 공원 이미지 출력 캔버스
-        self.park_type = Frame(frame3, width=380, height=250, bg='white')
-        self.park_type.pack(side=LEFT)
-        self.show_types()
+        # 시설 이미지 라벨 생성
+        self.img_frame = Frame(frame3, width=380, height=250, bg='white')
+        self.img_frame.pack(side=LEFT)
+        self.img_frame.pack_propagate(False)
+
+        self.img_label = Label(self.img_frame, bg='white')
+        self.img_label.pack()
 
         # 지도 이미지 라벨 생성
         self.map_img = Label(frame3, width=300, height=250, bg='white')
@@ -122,6 +125,7 @@ class UrbanPark:
         self.show_map()
 
     def show_info(self):
+
         # 리스트박스 오른쪽에 정보를 나타내는 이벤트 함수
         self.park_info.delete('all')
 
@@ -156,8 +160,49 @@ class UrbanPark:
             self.park_info.create_text(45, 160, font=temp_font, text="담당 기관: ")
             self.park_info.create_text(170, 160, font=temp_font, text=park['manage'])
 
-    def show_types(self):
-        pass
+    def show_image(self):
+        a = self.sport_list.curselection()
+        if a:
+            sport = self.sports_in_si[a[0]]
+            query = sport['si'] + ' +' + sport['name']
+            encText = urllib.parse.quote(query)
+            url = library_file.url + encText
+            request = urllib.request.Request(url)
+            request.add_header("X-Naver-Client-Id", library_file.client_id)
+            request.add_header("X-Naver-Client-Secret", library_file.client_secret)
+
+            response = urllib.request.urlopen(request)
+            rescode = response.getcode()
+
+            if (rescode == 200):
+                response_body = response.read()
+                # XML 파싱
+                root = ET.fromstring(response_body)
+                items = root.findall('./channel/item')
+                # 첫 번째 이미지 URL 가져오기
+                if items:
+                    image_url = items[0].find('thumbnail').text
+                else:
+                    image_url = None
+            else:
+                print("Error Code:" + rescode)
+                image_url = None
+
+            if image_url:
+                # 이미지 URL로부터 이미지 로드
+                image_byt = urllib.request.urlopen(image_url).read()
+                image_bf = io.BytesIO(image_byt)
+                image = Image.open(image_bf)
+
+                # 이미지 크기를 라벨 크기에 맞게 조정
+                image = image.resize((380, 250), Image.LANCZOS)
+                image = ImageTk.PhotoImage(image)
+
+                self.img_label.configure(image=image)
+                self.img_label.image = image
+            else:
+                self.img_label.configure()
+                self.img_label.image = None
 
     def add_favorite(self):
         a = self.park_list.curselection()

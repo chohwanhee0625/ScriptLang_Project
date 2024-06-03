@@ -95,7 +95,6 @@ class SportsCenter:
 
         self.img_label = Label(self.img_frame, bg='white')
         self.img_label.pack()
-        self.show_image()
 
         # 지도 이미지 라벨 생성
         self.map_img = Label(frame3, width=300, height=250, bg='white')
