@@ -67,7 +67,7 @@ class UrbanPark:
         b1.place(x=70, y=30)
 
         image = PhotoImage(file='images/next.png')
-        b2 = Button(button_frame, image=image, command=self.show_info)
+        b2 = Button(button_frame, image=image, command=self.on_item_select)
         b2.image = image
         b2.place(x=130, y=30)
 
@@ -133,8 +133,13 @@ class UrbanPark:
         self.show_parks()
         self.show_map()
 
-    def show_info(self):
+    def on_item_select(self):
+        # 출력 버튼 클릭 시 선택 항목 정보 출력 이벤트 함수
+        self.show_info()
+        self.show_image()
 
+
+    def show_info(self):
         # 리스트박스 오른쪽에 정보를 나타내는 이벤트 함수
         self.park_info.delete('all')
 
@@ -170,9 +175,9 @@ class UrbanPark:
             self.park_info.create_text(170, 160, font=temp_font, text=park['manage'])
 
     def show_image(self):
-        a = self.sport_list.curselection()
+        a = self.park_list.curselection()
         if a:
-            sport = self.sports_in_si[a[0]]
+            sport = self.parks_in_si[a[0]]
             query = sport['si'] + ' +' + sport['name']
             encText = urllib.parse.quote(query)
             url = library_file.url + encText

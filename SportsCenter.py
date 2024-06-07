@@ -59,7 +59,7 @@ class SportsCenter:
         b1.place(x=70, y=30)
 
         image = PhotoImage(file='images/next.png')
-        b2 = Button(button_frame, image=image, command=self.show_info)
+        b2 = Button(button_frame, image=image, command=self.on_item_select)
         b2.image = image
         b2.place(x=130, y=30)
 

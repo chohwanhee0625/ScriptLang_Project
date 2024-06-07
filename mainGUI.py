@@ -1,5 +1,9 @@
 # pip install requests
 # pip install googlemaps
+import telepot
+import traceback
+import sys
+
 from ConvenienceStore import *
 from Favorites import *
 from UrbanPark import *
@@ -34,8 +38,37 @@ class MainGUI:
         notebook.add(self.frame5, text='즐겨찾기')
         Favorites(self.frame5)
 
-        window.mainloop()
+        self.telebot()
 
+        window.mainloop()
+        self.sendMessage(self.user, "봇 종료")
+
+    def telebot(self):
+        key = 'sea100UMmw23Xycs33F1EQnumONR%2F9ElxBLzkilU9Yr1oT4TrCot8Y2p0jyuJP72x9rG9D8CN5yuEs6AS2sAiw%3D%3D'
+        TOKEN = '7279986887:AAFoPg_7tTNxYZgu9VkNkDp9kGpGDJCJIgY'
+        MAX_MSG_LENGTH = 300
+        self.bot = telepot.Bot(TOKEN)
+        self.user = '7463275315'
+
+        self.bot.message_loop(self.handle)
+        self.sendMessage(self.user, "시작 메시지")
+        print('Listening...')
+
+    def handle(self, msg):
+        content_type, chat_type, chat_id = telepot.glance(msg)
+        if content_type != 'text':
+            self.sendMessage(chat_id, '난 텍스트 이외의 메시지는 처리하지 못해요.')
+            return
+
+        text = msg['text']
+        args = text.split(' ')
+        self.sendMessage(chat_id, "메시지 테스트")
+
+    def sendMessage(self, user, msg):
+        try:
+            self.bot.sendMessage(user, msg)
+        except:
+            traceback.print_exc(file=sys.stdout)
 
 
 MainGUI()
