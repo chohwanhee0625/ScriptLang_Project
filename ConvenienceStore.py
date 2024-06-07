@@ -217,17 +217,5 @@ class ConvenienceStore:
         self.map_img.image = photo
 
 
-    @staticmethod
-    def tele_si(chat_id, si):
-        # print(chat_id, si)
-        # library_file.sendMessage(chat_id, si)
-
-        for store in ConvenienceStore.stores:
-            if store['si'] == si:
-                msg = ""
-                for k,v in store.items():
-                    msg += k + ": " + v + "\n"
-                sendMessage(chat_id, msg)
-
 
 
